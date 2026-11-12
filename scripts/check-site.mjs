@@ -1,5 +1,5 @@
 import fs from 'node:fs';import path from 'node:path';
-const root=process.cwd();const must=['index.html','guide.html','about.html','privacy.html','assets/app.mjs','assets/tools.mjs','assets/site.css','config/offers.json','robots.txt','_headers'];
+const root=process.cwd();const must=['index.html','guide.html','about.html','privacy.html','sitemap.xml','assets/app.mjs','assets/tools.mjs','assets/site.css','config/offers.json','robots.txt','_headers'];
 let errors=[];for(const file of must){if(!fs.existsSync(path.join(root,file)))errors.push(`Missing: ${file}`);}
 for(const file of ['about.html','privacy.html']){const txt=fs.readFileSync(path.join(root,file),'utf8');if(txt.includes('【公開前に'))console.warn(`WARN ${file}: 公開前の運営者情報・ポリシー更新が必要です`);}
 const offers=JSON.parse(fs.readFileSync(path.join(root,'config/offers.json'),'utf8'));
