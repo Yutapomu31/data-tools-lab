@@ -1,0 +1,11 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {parseDelimited,csvToJson,jsonToCsv,formatJson,minifyJson,encodeUrl,decodeUrl,textStats} from '../assets/tools.mjs';
+test('CSV supports quoted commas, escaped quotes, CRLF and multiline cells',()=>{const csv='name,note\r\n"太郎","hello, ""there"""\r\n"花子","line1\nline2"';assert.deepEqual(JSON.parse(csvToJson(csv)),[{name:'太郎',note:'hello, "there"'},{name:'花子',note:'line1\nline2'}]);});
+test('JSON to CSV round trip and missing keys',()=>{const input=JSON.stringify([{a:'x,y',b:'line\nline'},{a:'z',c:42}]);const csv=jsonToCsv(input);assert.deepEqual(JSON.parse(csvToJson(csv)),[{a:'x,y',b:'line\nline',c:''},{a:'z',b:'',c:'42'}]);});
+test('reject duplicate headers',()=>assert.throws(()=>csvToJson('a,a\n1,2'),/重複/));
+test('reject incorrect columns',()=>assert.throws(()=>csvToJson('a,b\n1'),/列数/));
+test('reject invalid quote and unterminated quote',()=>{assert.throws(()=>csvToJson('a\n"hello'),/引用符/);assert.throws(()=>csvToJson('a\nabc"x'),/引用符/);});
+test('TSV with embedded tab',()=>assert.deepEqual(parseDelimited('a\tb\n1\t"x\ty"','\t'),[['a','b'],['1','x\ty']]));
+test('empty rows and BOM',()=>assert.deepEqual(JSON.parse(csvToJson('\ufeffa,b\n1,2\n')),[{a:'1',b:'2'}]));
+test('formatter, minifier, URL codec',()=>{assert.equal(minifyJson(formatJson('{"a":1}')),'{"a":1}');assert.equal(decodeUrl(encodeUrl('東京 + hello')),'東京 + hello');assert.throws(()=>decodeUrl('%ZZ'),/不正/);});
+test('text stats handle Unicode',()=>assert.deepEqual(textStats('🙂\nA'),{characters:3,lines:2,bytes:6}));

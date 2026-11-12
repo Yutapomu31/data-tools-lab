@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /config/
+Disallow: /legacy-original.html

@@ -1,0 +1,10 @@
+{
+  "offers": [
+    {
+      "name": "承認済みのサービス名を入力",
+      "description": "サービスの長所・短所と、対象利用者に役立つ情報を事実に基づいて記載してください。",
+      "url": "https://example.com/REPLACE_AFTER_APPROVAL",
+      "enabled": false
+    }
+  ]
+}
