@@ -1,0 +1,30 @@
+name: Weekly quality check and uptime report
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 1 * * 1'
+permissions:
+  contents: read
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm test
+      - run: npm run check
+      - name: Uptime and report
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: npm run report
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: weekly-report
+          path: reports/latest.md
+          if-no-files-found: ignore
+          retention-days: 30
