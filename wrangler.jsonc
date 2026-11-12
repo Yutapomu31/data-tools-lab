@@ -1,0 +1,10 @@
+{
+  // Cloudflare Workers deployment for this static website.
+  "name": "data-tools-lab",
+  "compatibility_date": "2026-11-12",
+  "assets": {
+    "directory": "./dist"
+  },
+  // Required for the Workers Builds preview command: npx wrangler preview.
+  "previews": {}
+}
