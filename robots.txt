@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /config/
 Disallow: /legacy-original.html
+Sitemap: https://data-tools-lab.porxmu-31al-78.workers.dev/sitemap.xml
